@@ -1,3 +1,43 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+
+# Environment variables
 .env
-.node_modules
+.env.local
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Testing
+coverage/
+
+# Temporary files
+*.tmp
+.temp/
+
+# Memory/Vector DB
+*.lance
+*.db
+memory/
+
+# Backups
+.cogent-backups/
