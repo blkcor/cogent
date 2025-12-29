@@ -1,0 +1,23 @@
+{
+  "name": "cogent",
+  "version": "1.0.0",
+  "description": "AI-powered coding agent with advanced reasoning capabilities",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "cogent": "dist/cli.js"
+  },
+  "keywords": [
+    "ai",
+    "coding-agent",
+    "llm",
+    "reasoning",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+
