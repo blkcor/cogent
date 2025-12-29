@@ -25,7 +25,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "jsxImportSource": "react",
     "declaration": true,
     "declarationMap": true,
@@ -34,4 +34,3 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "tests"]
 }
-
