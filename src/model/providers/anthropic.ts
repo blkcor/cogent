@@ -9,11 +9,9 @@ export class AnthropicProvider extends BaseProvider {
   apiKeyEnvVar = 'ANTHROPIC_API_KEY'
   baseURL = 'https://api.anthropic.com/v1'
   models = [
-    'claude-3-5-sonnet-20241022',
-    'claude-3-5-sonnet-20240620',
-    'claude-3-opus-20240229',
-    'claude-3-sonnet-20240229',
-    'claude-3-haiku-20240307',
+    'claude-sonnet-4-5-20250929',
+    'claude-haiku-4-5-20251001',
+    'claude-opus-4-5-20251101',
   ]
 
   async createModel(
