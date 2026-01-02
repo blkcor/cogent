@@ -98,9 +98,10 @@ export class Tools implements ITools {
       const parsedArgs = JSON.parse(args)
       const validatedArgs = tool.parameters.parse(parsedArgs)
       return await tool.execute(validatedArgs, toolCallId)
-    } catch (error: any) {
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
       return {
-        llmContent: `Error executing tool '${toolName}': ${error.message}`,
+        llmContent: `Error executing tool '${toolName}': ${message}`,
         isError: true,
       }
     }
