@@ -17,7 +17,13 @@
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": ["ai", "coding-agent", "llm", "reasoning", "automation"],
+  "keywords": [
+    "ai",
+    "coding-agent",
+    "llm",
+    "reasoning",
+    "automation"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -56,5 +62,17 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blkcor/cogent.git"
+  },
+  "types": "./dist/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/blkcor/cogent/issues"
+  },
+  "homepage": "https://github.com/blkcor/cogent#readme"
 }
