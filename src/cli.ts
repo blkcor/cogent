@@ -12,14 +12,22 @@ const program = new Command()
 
 program
   .name('cogent')
-  .description('AI-powered coding assistant with advanced reasoning capabilities')
+  .description(
+    'AI-powered coding assistant with advanced reasoning capabilities'
+  )
   .version(VERSION)
 
 program
   .command('run <task...>')
   .description('Run a coding task')
-  .option('-m, --model <model>', 'Model to use (e.g., anthropic/claude-3-5-sonnet)')
-  .option('-r, --reasoning <mode>', 'Reasoning mode (react|plan_solve|reflection)')
+  .option(
+    '-m, --model <model>',
+    'Model to use (e.g., anthropic/claude-3-5-sonnet)'
+  )
+  .option(
+    '-r, --reasoning <mode>',
+    'Reasoning mode (react|plan_solve|reflection)'
+  )
   .option('--max-steps <n>', 'Maximum reasoning steps', '30')
   .option('--cwd <path>', 'Working directory', process.cwd())
   .action(async (taskArgs: string[], options) => {
@@ -29,23 +37,27 @@ program
     console.log(`\nTask: ${task}\n`)
 
     try {
-      const { context, tools, modelInfo, config } = await createAgent({ cwd: options.cwd })
+      const { agent, context, tools, modelInfo } = await createAgent({
+        cwd: options.cwd,
+      })
 
-      console.log(`✅ Initialized with ${modelInfo.provider.name} (${modelInfo.model.id})`)
+      console.log(`✅ Using ${modelInfo.provider.name} (${modelInfo.model.id})`)
       console.log(`✅ Loaded ${tools.length()} tools`)
       console.log(`✅ Working directory: ${context.cwd}\n`)
 
-      console.log('⚠️  Full reasoning engine implementation in progress...')
-      console.log('Available systems:')
-      console.log('  ✅ Multi-provider support (12+ providers)')
-      console.log('  ✅ Tool system (read, write, edit, search, command)')
-      console.log('  ✅ Configuration management')
-      console.log('  ✅ Security & approval system')
-      console.log('  ✅ Backup system')
-      console.log('  🚧 ReAct reasoning engine')
-      console.log('  🚧 Plan-and-Solve mode')
-      console.log('  🚧 Reflection mode')
-      console.log('  🚧 Memory systems')
+      const result = await agent.run(task)
+
+      if (result.success) {
+        console.log('\n✅ Completed\n')
+        console.log(result.result)
+        console.log(`\n📊 Metadata:`)
+        console.log(`  Duration: ${result.metadata.duration}ms`)
+        console.log(`  Turns: ${result.metadata.turnsCount}`)
+      } else {
+        console.error('\n❌ Failed\n')
+        console.error(result.result)
+        process.exit(1)
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error)
       console.error(`\n❌ Failed: ${message}`)
@@ -113,4 +125,3 @@ program
   })
 
 program.parse()
-

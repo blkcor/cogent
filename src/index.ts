@@ -5,6 +5,7 @@ import { ProviderManager } from './model/provider-manager'
 import { ConfigManager } from './config'
 import { Tools } from './tool'
 import { createAllTools } from './tools/index'
+import { Agent } from './agent'
 import { PRODUCT_NAME } from './constants'
 
 export async function createAgent(opts: { cwd?: string } = {}) {
@@ -32,7 +33,16 @@ export async function createAgent(opts: { cwd?: string } = {}) {
 
   const modelInfo = await providerManager.resolveModel(config.model, {})
 
+  const agent = new Agent({
+    model: modelInfo,
+    tools,
+    reasoningMode: config.reasoning.defaultMode,
+    maxSteps: config.reasoning.maxSteps,
+    cwd,
+  })
+
   return {
+    agent,
     context,
     tools,
     modelInfo,
@@ -52,8 +62,27 @@ export async function main() {
   console.log(`🤖 ${PRODUCT_NAME} - AI Coding Assistant\n`)
   console.log(`Task: ${task}\n`)
 
-  console.log('⚠️  Full agent implementation in progress...')
-  console.log('Core systems ready: ✅ Providers, ✅ Tools, ✅ Config, ✅ Security')
+  try {
+    const { agent, modelInfo } = await createAgent()
+
+    console.log(`Using ${modelInfo.provider.name} (${modelInfo.model.id})\n`)
+
+    const result = await agent.run(task)
+
+    if (result.success) {
+      console.log('\n✅ Task completed successfully!\n')
+      console.log(result.result)
+      console.log(`\n📊 Duration: ${result.metadata.duration}ms`)
+    } else {
+      console.error('\n❌ Task failed:\n')
+      console.error(result.result)
+      process.exit(1)
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    console.error(`\n❌ Fatal error: ${message}`)
+    process.exit(1)
+  }
 }
 
 export { Context } from './context'
@@ -61,7 +90,9 @@ export { ProviderManager } from './model/provider-manager'
 export { ConfigManager, ApprovalMode, ReasoningMode } from './config'
 export { Tools, createTool } from './tool'
 export { ApprovalSystem } from './security/approval'
+export { Agent } from './agent'
 export * from './tools/index'
+export * from './reasoning/index'
 export * from './constants'
 
 if (import.meta.url === `file://${process.argv[1]}`) {
@@ -70,4 +101,3 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     process.exit(1)
   })
 }
-
