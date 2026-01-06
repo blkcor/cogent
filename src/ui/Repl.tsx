@@ -67,7 +67,9 @@ export function Repl() {
       return
     }
 
-    if (char.length === 1 && !key.ctrl && !key.meta) {
+    // Handle any character input (including multi-byte UTF-8 like Chinese)
+    // Filter out control characters but allow printable characters
+    if (char && !key.ctrl && !key.meta && char >= ' ') {
       setInput((prev) => prev + char)
     }
   })
@@ -75,7 +77,23 @@ export function Repl() {
   async function executeTask(task: string) {
     try {
       setCurrentResponse('Initializing agent...')
-      const { agent, modelInfo } = await createAgent()
+      const { agent, modelInfo } = await createAgent({
+        onThought: (thought) => {
+          setCurrentResponse(`💭 ${thought.substring(0, 60)}...`)
+          setHistory((prev) => [...prev, `  💭 ${thought}`])
+        },
+        onToolCall: (toolName, args) => {
+          setCurrentResponse(`🔧 Calling ${toolName}...`)
+          setHistory((prev) => [...prev, `  🔧 ${toolName}(${JSON.stringify(args)})`])
+        },
+        onToolResult: (_toolName, result) => {
+          const shortResult = result.length > 100 ? result.substring(0, 100) + '...' : result
+          setHistory((prev) => [...prev, `     ✓ ${shortResult}`])
+        },
+        onStep: (step, total) => {
+          setCurrentResponse(`Step ${step}/${total}`)
+        },
+      })
 
       setCurrentResponse(`Using ${modelInfo.provider.name}/${modelInfo.model.id}...`)
 

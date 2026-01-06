@@ -16,7 +16,8 @@
       },
       "complexity": {
         "noForEach": "off",
-        "noUselessSwitchCase": "off"
+        "noUselessSwitchCase": "off",
+        "useOptionalChain": "off"
       }
     }
   },

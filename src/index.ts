@@ -12,7 +12,15 @@ import { createAllTools } from './tools/index'
 // Ensure environment variables are loaded
 dotenv.config()
 
-export async function createAgent(opts: { cwd?: string } = {}) {
+export interface CreateAgentOptions {
+  cwd?: string
+  onThought?: (thought: string) => void
+  onToolCall?: (toolName: string, args: any) => void
+  onToolResult?: (toolName: string, result: string) => void
+  onStep?: (step: number, total: number) => void
+}
+
+export async function createAgent(opts: CreateAgentOptions = {}) {
   const cwd = opts.cwd || process.cwd()
 
   const configManager = new ConfigManager()
@@ -43,6 +51,10 @@ export async function createAgent(opts: { cwd?: string } = {}) {
     reasoningMode: config.reasoning.defaultMode,
     maxSteps: config.reasoning.maxSteps,
     cwd,
+    onThought: opts.onThought,
+    onToolCall: opts.onToolCall,
+    onToolResult: opts.onToolResult,
+    onStep: opts.onStep,
   })
 
   return {

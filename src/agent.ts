@@ -21,6 +21,10 @@ export interface AgentConfig {
   reasoningMode?: ReasoningMode
   maxSteps?: number
   cwd: string
+  onThought?: (thought: string) => void
+  onToolCall?: (toolName: string, args: any) => void
+  onToolResult?: (toolName: string, result: string) => void
+  onStep?: (step: number, total: number) => void
 }
 
 export interface IAgent {
@@ -82,29 +86,63 @@ export class Agent implements IAgent {
     return this.modeSelector.selectMode(task, this.config.reasoningMode)
   }
 
-  private async executeWithMode(task: string, mode: ReasoningMode): Promise<string> {
+  private async executeWithMode(
+    task: string,
+    mode: ReasoningMode
+  ): Promise<string> {
     const llm = await this.config.model._mCreator()
+
+    const callbacks = {
+      onThought: this.config.onThought,
+      onToolCall: this.config.onToolCall,
+      onToolResult: this.config.onToolResult,
+      onStep: this.config.onStep,
+    }
 
     switch (mode) {
       case ReasoningMode.REACT: {
-        const agent = new ReActAgent(llm, this.config.tools, this.config.maxSteps)
+        const agent = new ReActAgent(
+          llm,
+          this.config.tools,
+          this.config.maxSteps,
+          3,
+          callbacks
+        )
         return await agent.run(task)
       }
 
       case ReasoningMode.PLAN_SOLVE: {
         console.log('⚠️  Plan-and-Solve mode not yet implemented, using ReAct')
-        const agent = new ReActAgent(llm, this.config.tools, this.config.maxSteps)
+        const agent = new ReActAgent(
+          llm,
+          this.config.tools,
+          this.config.maxSteps,
+          3,
+          callbacks
+        )
         return await agent.run(task)
       }
 
       case ReasoningMode.REFLECTION: {
         console.log('⚠️  Reflection mode not yet implemented, using ReAct')
-        const agent = new ReActAgent(llm, this.config.tools, this.config.maxSteps)
+        const agent = new ReActAgent(
+          llm,
+          this.config.tools,
+          this.config.maxSteps,
+          3,
+          callbacks
+        )
         return await agent.run(task)
       }
 
       default: {
-        const agent = new ReActAgent(llm, this.config.tools, this.config.maxSteps)
+        const agent = new ReActAgent(
+          llm,
+          this.config.tools,
+          this.config.maxSteps,
+          3,
+          callbacks
+        )
         return await agent.run(task)
       }
     }

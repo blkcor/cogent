@@ -32,7 +32,39 @@ export function App({ task, onComplete }: AppProps) {
           currentStep: 'Loading configuration...',
         }))
 
-        const { agent, modelInfo } = await createAgent()
+        const { agent, modelInfo } = await createAgent({
+          onThought: (thought) => {
+            if (!mounted) return
+            setState((prev) => ({
+              ...prev,
+              reasoning: [...prev.reasoning, thought],
+              currentStep: `Thinking: ${thought.substring(0, 50)}...`,
+            }))
+          },
+          onToolCall: (toolName, args) => {
+            if (!mounted) return
+            setState((prev) => ({
+              ...prev,
+              currentStep: `Calling tool: ${toolName}`,
+              output: [...prev.output, `🔧 ${toolName}(${JSON.stringify(args)})`],
+            }))
+          },
+          onToolResult: (_toolName, result) => {
+            if (!mounted) return
+            const shortResult = result.length > 100 ? result.substring(0, 100) + '...' : result
+            setState((prev) => ({
+              ...prev,
+              output: [...prev.output, `  ✓ ${shortResult}`],
+            }))
+          },
+          onStep: (step, total) => {
+            if (!mounted) return
+            setState((prev) => ({
+              ...prev,
+              currentStep: `Step ${step} of ${total}`,
+            }))
+          },
+        })
 
         if (!mounted) return
 
