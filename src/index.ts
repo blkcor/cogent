@@ -93,6 +93,7 @@ export { ApprovalSystem } from './security/approval'
 export { Agent } from './agent'
 export * from './tools/index'
 export * from './reasoning/index'
+export * from './memory/index'
 export * from './constants'
 
 if (import.meta.url === `file://${process.argv[1]}`) {
