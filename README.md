@@ -35,10 +35,53 @@ OPENAI_API_KEY=your_key_here
 # Add other provider keys as needed
 ```
 
-3. Run a task:
+3. Use Cogent:
 
+**Interactive REPL Mode (default):**
+```bash
+cogent
+```
+This enters an interactive shell where you can type tasks and get immediate responses.
+
+**Single Task Execution:**
 ```bash
 cogent run "Create a REST API with Express and TypeScript"
+```
+
+### Interactive REPL Mode
+
+Run `cogent` without arguments to enter interactive REPL (Read-Eval-Print Loop) mode:
+
+```bash
+cogent
+```
+
+In REPL mode, you can:
+- 💬 **Chat continuously** with the agent
+- 🔄 **Execute multiple tasks** in one session
+- 📝 **See command history** as you work
+- ⚡ **Quick iteration** without restarting
+
+**REPL Commands:**
+- Type any coding task and press Enter to execute
+- Type `clear` to clear the screen
+- Type `exit` or `quit` to leave REPL mode
+- Press `Ctrl+C` to exit
+
+### Terminal UI
+
+Cogent features a beautiful Terminal User Interface (TUI) that provides:
+
+- 🎨 **Colorful output** with status indicators
+- ⚡ **Real-time streaming** of agent thoughts and actions
+- 📋 **Step-by-step progress** tracking
+- 🔍 **Tool call visualization** with parameters and results
+- 💭 **Reasoning display** showing agent decision-making
+
+The TUI is enabled by default. To use simple console output instead:
+
+```bash
+cogent run "your task" --no-ui
 ```
 
 ## Configuration

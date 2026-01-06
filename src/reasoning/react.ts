@@ -26,7 +26,7 @@ export class ReActAgent implements IReActAgent {
 
     const systemPrompt = `You are an AI coding assistant that solves tasks using available tools.
 
-Available tools: ${Array.from({ length: this.tools.length() }, (_, i) => {
+Available tools: ${Array.from({ length: this.tools.length() }, () => {
       const toolNames: string[] = []
       // Get all tool names (simplified approach)
       return toolNames

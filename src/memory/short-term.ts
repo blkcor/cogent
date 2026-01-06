@@ -21,7 +21,7 @@ export class ConversationHistory implements IConversationHistory {
     const normalizedMessage: NormalizedMessage = {
       ...message,
       uuid: randomUUID(),
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     }
 
     this.messages.push(normalizedMessage)
@@ -53,8 +53,11 @@ export class ConversationHistory implements IConversationHistory {
   private async summarizeMessages(messages: NormalizedMessage[]): Promise<NormalizedMessage> {
     const content = messages
       .map((m) => {
-        const textContent = m.content.find((c) => c.type === 'text')
-        return textContent ? `${m.role}: ${textContent.text}` : ''
+        if (typeof m.content === 'string') {
+          return `${m.role}: ${m.content}`
+        }
+        const textContent = m.content.find((c: any) => c.type === 'text')
+        return textContent && 'text' in textContent ? `${m.role}: ${textContent.text}` : ''
       })
       .filter(Boolean)
       .join('\n')
@@ -68,7 +71,8 @@ export class ConversationHistory implements IConversationHistory {
         },
       ],
       uuid: randomUUID(),
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
+      parentUuid: null,
     }
   }
 }
