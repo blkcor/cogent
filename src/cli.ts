@@ -50,7 +50,7 @@ program
       if (result.success) {
         console.log('\n✅ Completed\n')
         console.log(result.result)
-        console.log(`\n📊 Metadata:`)
+        console.log('\n📊 Metadata:')
         console.log(`  Duration: ${result.metadata.duration}ms`)
         console.log(`  Turns: ${result.metadata.turnsCount}`)
       } else {
