@@ -14,10 +14,7 @@ export async function readFile(filePath: string): Promise<string> {
   return await fs.readFile(filePath, 'utf-8')
 }
 
-export async function writeFile(
-  filePath: string,
-  content: string
-): Promise<void> {
+export async function writeFile(filePath: string, content: string): Promise<void> {
   const dir = path.dirname(filePath)
   await fs.mkdir(dir, { recursive: true })
   await fs.writeFile(filePath, content, 'utf-8')
@@ -54,10 +51,7 @@ export async function deleteFile(filePath: string): Promise<void> {
   await fs.unlink(filePath)
 }
 
-export async function copyFile(
-  source: string,
-  destination: string
-): Promise<void> {
+export async function copyFile(source: string, destination: string): Promise<void> {
   const dir = path.dirname(destination)
   await fs.mkdir(dir, { recursive: true })
   await fs.copyFile(source, destination)

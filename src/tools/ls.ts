@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { z } from 'zod'
-import { createTool, type ToolResult } from '../tool'
+import { type ToolResult, createTool } from '../tool'
 import { fileExists, listDirectory } from '../utils/file-utils'
 
 export const lsSchema = z.object({
@@ -29,10 +29,7 @@ export function createLSTool(opts: { cwd: string }) {
           }
         }
 
-        const { files, directories } = await listDirectory(
-          dirPath,
-          params.recursive || false
-        )
+        const { files, directories } = await listDirectory(dirPath, params.recursive || false)
 
         const relativeFiles = files.map((f) => path.relative(opts.cwd, f))
         const relativeDirs = directories.map((d) => path.relative(opts.cwd, d))
@@ -75,4 +72,3 @@ export function createLSTool(opts: { cwd: string }) {
     },
   })
 }
-

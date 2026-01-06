@@ -1,7 +1,7 @@
 import path from 'node:path'
-import { z } from 'zod'
 import fg from 'fast-glob'
-import { createTool, type ToolResult } from '../tool'
+import { z } from 'zod'
+import { type ToolResult, createTool } from '../tool'
 
 export const globSchema = z.object({
   pattern: z.string().describe('Glob pattern to search for files (e.g., "**/*.ts")'),
@@ -57,4 +57,3 @@ export function createGlobTool(opts: { cwd: string }) {
     },
   })
 }
-

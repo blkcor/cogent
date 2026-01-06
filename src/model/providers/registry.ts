@@ -1,8 +1,8 @@
 import type { Provider } from '../types'
 import { AnthropicProvider } from './anthropic'
 import { GoogleProvider } from './google'
-import { OpenAICompatibleProvider } from './openai-compatible'
 import { OpenAIProvider } from './openai'
+import { OpenAICompatibleProvider } from './openai-compatible'
 
 export const BUILTIN_PROVIDERS: Record<string, Provider> = {
   openai: new OpenAIProvider(),
@@ -41,13 +41,10 @@ export const BUILTIN_PROVIDERS: Record<string, Provider> = {
     ['glm-4.7', 'glm-4.5-air']
   ),
 
-  xai: new OpenAICompatibleProvider(
-    'xai',
-    'xAI',
-    'https://api.x.ai/v1',
-    'XAI_API_KEY',
-    ['grok-beta', 'grok-vision-beta']
-  ),
+  xai: new OpenAICompatibleProvider('xai', 'xAI', 'https://api.x.ai/v1', 'XAI_API_KEY', [
+    'grok-beta',
+    'grok-vision-beta',
+  ]),
 
   cerebras: new OpenAICompatibleProvider(
     'cerebras',

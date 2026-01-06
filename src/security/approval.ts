@@ -1,12 +1,9 @@
-import type { Tool } from '../tool'
 import { ApprovalMode } from '../config'
+import type { Tool } from '../tool'
 
 export interface IApprovalSystem {
   needsApproval(tool: Tool<any>, params: Record<string, any>): boolean
-  requestApproval(
-    tool: Tool<any>,
-    params: Record<string, any>
-  ): Promise<boolean>
+  requestApproval(tool: Tool<any>, params: Record<string, any>): Promise<boolean>
 }
 
 export class ApprovalSystem implements IApprovalSystem {
@@ -42,17 +39,11 @@ export class ApprovalSystem implements IApprovalSystem {
           }) as boolean
         }
 
-        return (
-          tool.approval?.category === 'write' ||
-          tool.approval?.category === 'command'
-        )
+        return tool.approval?.category === 'write' || tool.approval?.category === 'command'
     }
   }
 
-  async requestApproval(
-    tool: Tool<any>,
-    params: Record<string, any>
-  ): Promise<boolean> {
+  async requestApproval(tool: Tool<any>, params: Record<string, any>): Promise<boolean> {
     console.log(`Requesting approval for ${tool.name} with params:`, params)
 
     if (this.mode === ApprovalMode.YOLO) {

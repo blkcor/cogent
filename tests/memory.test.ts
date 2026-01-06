@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { VectorDB } from '../src/memory/vector-db'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { EpisodicMemory } from '../src/memory/episodic'
 import { SemanticMemory } from '../src/memory/semantic'
 import { ConversationHistory, ReasoningTrace } from '../src/memory/short-term'
+import { VectorDB } from '../src/memory/vector-db'
 
 describe('Memory Systems', () => {
   describe('VectorDB', () => {
@@ -161,17 +161,9 @@ describe('Memory Systems', () => {
     })
 
     it('should add and retrieve steps', () => {
-      trace.addStep(
-        'I need to check the file',
-        'read_file',
-        'File contains config data'
-      )
+      trace.addStep('I need to check the file', 'read_file', 'File contains config data')
 
-      trace.addStep(
-        'Now I will modify it',
-        'edit_file',
-        'File updated successfully'
-      )
+      trace.addStep('Now I will modify it', 'edit_file', 'File updated successfully')
 
       const steps = trace.getSteps()
       expect(steps.length).toBe(2)
@@ -201,4 +193,3 @@ describe('Memory Systems', () => {
     })
   })
 })
-

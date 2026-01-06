@@ -1,8 +1,8 @@
-import path from 'node:path'
 import { exec } from 'node:child_process'
+import path from 'node:path'
 import { promisify } from 'node:util'
 import { z } from 'zod'
-import { createTool, type ToolResult } from '../tool'
+import { type ToolResult, createTool } from '../tool'
 
 const execAsync = promisify(exec)
 
@@ -88,4 +88,3 @@ export function createGrepTool(opts: { cwd: string }) {
     },
   })
 }
-

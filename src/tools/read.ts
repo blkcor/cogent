@@ -1,14 +1,11 @@
 import path from 'node:path'
 import { z } from 'zod'
-import { createTool, type ToolResult } from '../tool'
+import { type ToolResult, createTool } from '../tool'
 import { fileExists, readFile } from '../utils/file-utils'
 
 export const readFileSchema = z.object({
   file_path: z.string().describe('The path to the file to read'),
-  offset: z
-    .number()
-    .optional()
-    .describe('Line number to start reading from (1-indexed)'),
+  offset: z.number().optional().describe('Line number to start reading from (1-indexed)'),
   limit: z.number().optional().describe('Maximum number of lines to read'),
 })
 
@@ -16,8 +13,7 @@ export function createReadTool(opts: { cwd: string; productName: string }) {
   return createTool({
     name: 'read_file',
     displayName: '📖 Read File',
-    description:
-      'Read the contents of a file. Can optionally read a specific range of lines.',
+    description: 'Read the contents of a file. Can optionally read a specific range of lines.',
     parameters: readFileSchema,
     approval: {
       category: 'read',

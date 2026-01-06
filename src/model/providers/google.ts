@@ -6,7 +6,7 @@ import { BaseProvider } from './base'
 export class GoogleProvider extends BaseProvider {
   id = 'google'
   name = 'Google'
-  apiKeyEnvVar: string | undefined
+  apiKeyEnvVar = 'GOOGLE_GENERATIVE_AI_API_KEY'
   baseURL = 'https://generativelanguage.googleapis.com/v1beta'
   models = [
     'gemini-3-pro',
@@ -16,10 +16,7 @@ export class GoogleProvider extends BaseProvider {
     'gemini-2.5-pro',
   ]
 
-  async createModel(
-    modelId: string,
-    config: ModelConfig
-  ): Promise<LanguageModel> {
+  async createModel(modelId: string, config: ModelConfig): Promise<LanguageModel> {
     this.validateConfig(config)
     const apiKey = this.getApiKey(config)
 

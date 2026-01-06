@@ -43,9 +43,7 @@ export class Context implements IContext {
     this.backupSystem = new BackupSystem(opts.cwd)
   }
 
-  static async create(
-    opts: Omit<ContextOpts, 'config'> & { config?: Config }
-  ): Promise<Context> {
+  static async create(opts: Omit<ContextOpts, 'config'> & { config?: Config }): Promise<Context> {
     const { ConfigManager } = await import('./config')
     const configManager = new ConfigManager()
     const config = opts.config || (await configManager.load())
@@ -155,4 +153,3 @@ export class ContextManager {
     return Math.ceil(text.length / 4)
   }
 }
-

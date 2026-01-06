@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
-import { Box, Text, useInput, useApp } from 'ink'
+import { Box, Text, useApp, useInput } from 'ink'
 import Spinner from 'ink-spinner'
-import { createAgent } from '../index.js'
+import { useEffect, useState } from 'react'
 import { PRODUCT_NAME, VERSION } from '../constants.js'
+import { createAgent } from '../index.js'
 
 export function Repl() {
   const { exit } = useApp()
@@ -56,7 +56,7 @@ export function Repl() {
 
         // Execute the task
         executeTask(command)
-        
+
         return ''
       })
       return
@@ -116,7 +116,17 @@ export function Repl() {
       {/* History */}
       {history.map((line, idx) => (
         <Box key={idx}>
-          <Text color={line.startsWith('>') ? 'cyan' : line.startsWith('✅') ? 'green' : line.startsWith('❌') ? 'red' : undefined}>
+          <Text
+            color={
+              line.startsWith('>')
+                ? 'cyan'
+                : line.startsWith('✅')
+                  ? 'green'
+                  : line.startsWith('❌')
+                    ? 'red'
+                    : undefined
+            }
+          >
             {line}
           </Text>
         </Box>
@@ -137,9 +147,7 @@ export function Repl() {
           <Text bold color="green">
             cogent{' '}
           </Text>
-          <Text color="gray">
-            ❯{' '}
-          </Text>
+          <Text color="gray">❯ </Text>
           <Text>{input}</Text>
           <Text inverse> </Text>
         </Box>
@@ -147,4 +155,3 @@ export function Repl() {
     </Box>
   )
 }
-

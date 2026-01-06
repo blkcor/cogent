@@ -28,10 +28,7 @@ export class BackupSystem implements IBackupSystem {
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
     const relativePath = path.relative(this.workspaceRoot, filePath)
-    const backupPath = path.join(
-      this.backupDir,
-      `${relativePath.replace(/\//g, '_')}_${timestamp}`
-    )
+    const backupPath = path.join(this.backupDir, `${relativePath.replace(/\//g, '_')}_${timestamp}`)
 
     await copyFile(filePath, backupPath)
 
@@ -76,4 +73,3 @@ export class BackupSystem implements IBackupSystem {
     }
   }
 }
-

@@ -35,4 +35,3 @@ export abstract class BaseProvider implements Provider {
     return config.baseURL || this.baseURL || ''
   }
 }
-

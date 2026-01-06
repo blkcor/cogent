@@ -1,5 +1,5 @@
-import { embed } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
+import { embed } from 'ai'
 
 export interface VectorDBEntry {
   id: string
@@ -21,11 +21,7 @@ export interface VectorDBConfig {
 
 export interface IVectorDB {
   add(entry: VectorDBEntry): Promise<void>
-  search(
-    embedding: number[],
-    k: number,
-    filters?: Record<string, any>
-  ): Promise<SearchResult[]>
+  search(embedding: number[], k: number, filters?: Record<string, any>): Promise<SearchResult[]>
   embed(text: string): Promise<number[]>
   delete(id: string): Promise<void>
 }
@@ -40,9 +36,7 @@ export class VectorDB implements IVectorDB {
     const openai = createOpenAI({
       apiKey: config.apiKey || process.env.OPENAI_API_KEY,
     })
-    this.embeddingModel = openai.embedding(
-      config.embeddingModel || 'text-embedding-3-small'
-    )
+    this.embeddingModel = openai.embedding(config.embeddingModel || 'text-embedding-3-small')
   }
 
   async add(entry: VectorDBEntry): Promise<void> {
@@ -58,9 +52,7 @@ export class VectorDB implements IVectorDB {
 
     if (filters) {
       candidates = this.entries.filter((entry) => {
-        return Object.entries(filters).every(
-          ([key, value]) => entry.metadata[key] === value
-        )
+        return Object.entries(filters).every(([key, value]) => entry.metadata[key] === value)
       })
     }
 

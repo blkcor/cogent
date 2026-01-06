@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { ApprovalSystem } from '../src/security/approval'
-import { ApprovalMode } from '../src/config'
-import { createTool } from '../src/tool'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { z } from 'zod'
+import { ApprovalMode } from '../src/config'
+import { ApprovalSystem } from '../src/security/approval'
+import { createTool } from '../src/tool'
 
 describe('Security Systems', () => {
   describe('ApprovalSystem', () => {
@@ -38,7 +38,7 @@ describe('Security Systems', () => {
     it('should get and set approval mode', () => {
       const system = new ApprovalSystem(ApprovalMode.DEFAULT)
       expect(system.getMode()).toBe(ApprovalMode.DEFAULT)
-      
+
       system.setMode(ApprovalMode.YOLO)
       expect(system.getMode()).toBe(ApprovalMode.YOLO)
     })
@@ -126,4 +126,3 @@ describe('Security Systems', () => {
     })
   })
 })
-

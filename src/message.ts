@@ -72,9 +72,7 @@ export function isToolResultPart(part: any): part is ToolResultPart {
   return part?.type === 'tool_result'
 }
 
-export function extractTextFromContent(
-  content: string | AssistantContent | ToolContent
-): string {
+export function extractTextFromContent(content: string | AssistantContent | ToolContent): string {
   if (typeof content === 'string') {
     return content
   }
@@ -88,4 +86,3 @@ export function extractTextFromContent(
 
   return ''
 }
-

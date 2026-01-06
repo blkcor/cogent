@@ -1,9 +1,9 @@
-import type { ModelInfo } from './model/types'
-import type { Tools } from './tool'
 import type { NormalizedMessage } from './message'
-import { ReasoningMode } from './reasoning/types'
-import { ReActAgent } from './reasoning/react'
+import type { ModelInfo } from './model/types'
 import { ModeSelector } from './reasoning/mode-selector'
+import { ReActAgent } from './reasoning/react'
+import { ReasoningMode } from './reasoning/types'
+import type { Tools } from './tool'
 
 export interface AgentResult {
   success: boolean
@@ -110,4 +110,3 @@ export class Agent implements IAgent {
     }
   }
 }
-

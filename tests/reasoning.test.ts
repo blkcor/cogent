@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { ModeSelector } from '../src/reasoning/mode-selector'
 import { ReasoningMode } from '../src/reasoning/types'
 
@@ -65,4 +65,3 @@ describe('Reasoning Systems', () => {
     })
   })
 })
-

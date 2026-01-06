@@ -1,5 +1,5 @@
-import type { ModelConfig, ModelInfo, Provider } from './types'
 import { BUILTIN_PROVIDERS } from './providers/registry'
+import type { ModelConfig, ModelInfo, Provider } from './types'
 
 export interface IProviderManager {
   registerProvider(provider: Provider): void
@@ -26,10 +26,7 @@ export class ProviderManager implements IProviderManager {
   }
 
   getAllProviders(): Provider[] {
-    return [
-      ...Array.from(this.providers.values()),
-      ...Array.from(this.pluginProviders.values()),
-    ]
+    return [...Array.from(this.providers.values()), ...Array.from(this.pluginProviders.values())]
   }
 
   async resolveModel(modelString: string, config: ModelConfig): Promise<ModelInfo> {
@@ -105,4 +102,3 @@ export class ProviderManager implements IProviderManager {
     )
   }
 }
-

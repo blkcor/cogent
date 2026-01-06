@@ -1,10 +1,10 @@
-import { describe, it, expect, beforeAll } from 'vitest'
-import { ProviderManager } from '../src/model/provider-manager'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { ConfigManager } from '../src/config'
+import { PRODUCT_NAME } from '../src/constants'
+import { Context } from '../src/context'
+import { ProviderManager } from '../src/model/provider-manager'
 import { Tools } from '../src/tool'
 import { createAllTools } from '../src/tools/index'
-import { Context } from '../src/context'
-import { PRODUCT_NAME } from '../src/constants'
 
 describe('Integration Tests', () => {
   describe('Provider System', () => {
@@ -92,4 +92,3 @@ describe('Integration Tests', () => {
     })
   })
 })
-

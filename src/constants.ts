@@ -38,4 +38,3 @@ export const RESTRICTED_PATHS = [
   '~/.ssh',
   '~/.aws',
 ]
-

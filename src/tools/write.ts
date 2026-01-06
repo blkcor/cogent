@@ -1,8 +1,8 @@
 import path from 'node:path'
 import { z } from 'zod'
-import { createTool, type ToolResult } from '../tool'
-import { writeFile } from '../utils/file-utils'
+import { type ToolResult, createTool } from '../tool'
 import type { BackupSystem } from '../utils/backup'
+import { writeFile } from '../utils/file-utils'
 
 export const writeFileSchema = z.object({
   file_path: z.string().describe('The path to the file to write'),
@@ -50,4 +50,3 @@ export function createWriteTool(opts: { cwd: string; backupSystem?: BackupSystem
     },
   })
 }
-

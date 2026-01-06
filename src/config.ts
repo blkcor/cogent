@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { fileExists } from './utils/file-utils'
 import type { ProviderConfig } from './model/types'
+import { fileExists } from './utils/file-utils'
 
 export enum ApprovalMode {
   STRICT = 'strict',
@@ -172,4 +172,3 @@ export class ConfigManager implements IConfigManager {
     }
   }
 }
-

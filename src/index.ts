@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 
+import dotenv from 'dotenv'
+import { Agent } from './agent'
+import { ConfigManager } from './config'
+import { PRODUCT_NAME } from './constants'
 import { Context } from './context'
 import { ProviderManager } from './model/provider-manager'
-import { ConfigManager } from './config'
 import { Tools } from './tool'
 import { createAllTools } from './tools/index'
-import { Agent } from './agent'
-import { PRODUCT_NAME } from './constants'
+
+// Ensure environment variables are loaded
+dotenv.config()
 
 export async function createAgent(opts: { cwd?: string } = {}) {
   const cwd = opts.cwd || process.cwd()

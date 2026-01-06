@@ -125,16 +125,20 @@ export class Tools implements ITools {
 
 function zodToJsonSchema(schema: z.ZodTypeAny): any {
   const shape = (schema as any)._def?.shape?.()
-  if (!shape) return {}
+  if (!shape) return { type: 'object', properties: {} }
 
   const properties: any = {}
   const required: string[] = []
 
   for (const [key, value] of Object.entries(shape)) {
+    if (!value) continue
+
     const zodType = value as z.ZodTypeAny
     properties[key] = zodTypeToJsonSchema(zodType)
 
-    if (!zodType.isOptional()) {
+    // Check if the type is optional by looking at its typeName
+    const typeName = (zodType as any)._def?.typeName
+    if (typeName && typeName !== 'ZodOptional') {
       required.push(key)
     }
   }
@@ -147,7 +151,11 @@ function zodToJsonSchema(schema: z.ZodTypeAny): any {
 }
 
 function zodTypeToJsonSchema(zodType: z.ZodTypeAny): any {
-  const typeName = (zodType as any)._def?.typeName
+  if (!zodType || !(zodType as any)._def) {
+    return { type: 'string' }
+  }
+
+  const typeName = (zodType as any)._def.typeName
 
   switch (typeName) {
     case 'ZodString':
@@ -167,6 +175,8 @@ function zodTypeToJsonSchema(zodType: z.ZodTypeAny): any {
       }
     case 'ZodOptional':
       return zodTypeToJsonSchema((zodType as any)._def.innerType)
+    case 'ZodObject':
+      return zodToJsonSchema(zodType)
     default:
       return { type: 'string' }
   }

@@ -25,10 +25,7 @@ export class OpenAICompatibleProvider extends BaseProvider {
     this.models = models
   }
 
-  async createModel(
-    modelId: string,
-    config: ModelConfig
-  ): Promise<LanguageModel> {
+  async createModel(modelId: string, config: ModelConfig): Promise<LanguageModel> {
     this.validateConfig(config)
     const apiKey = this.getApiKey(config)
 
@@ -40,4 +37,3 @@ export class OpenAICompatibleProvider extends BaseProvider {
     return client(modelId)
   }
 }
-

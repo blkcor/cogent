@@ -25,4 +25,3 @@ export interface DiffViewProps {
   oldContent: string
   newContent: string
 }
-

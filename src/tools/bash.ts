@@ -1,21 +1,15 @@
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
 import { z } from 'zod'
-import { createTool, type ToolResult } from '../tool'
 import { DANGEROUS_COMMANDS, HIGH_RISK_PATTERNS } from '../constants'
+import { type ToolResult, createTool } from '../tool'
 
 const execAsync = promisify(exec)
 
 export const bashSchema = z.object({
   command: z.string().describe('The bash command to execute'),
-  timeout: z
-    .number()
-    .optional()
-    .describe('Timeout in milliseconds (default: 30000)'),
-  capture_output: z
-    .boolean()
-    .optional()
-    .describe('Capture command output (default: true)'),
+  timeout: z.number().optional().describe('Timeout in milliseconds (default: 30000)'),
+  capture_output: z.boolean().optional().describe('Capture command output (default: true)'),
 })
 
 export function validateCommand(command: string): {

@@ -1,0 +1,31 @@
+{
+  "model": "openai/gpt-4o",
+  "smallModel": "openai/gpt-4o",
+  "planModel": "openai/gpt-4o",
+  "reasoning": {
+    "defaultMode": "react",
+    "maxSteps": 30,
+    "enableReflection": false
+  },
+  "memory": {
+    "enableLongTerm": true,
+    "vectorDb": "lancedb",
+    "episodicMemorySize": 100,
+    "semanticMemorySize": 500
+  },
+  "security": {
+    "approvalMode": "default",
+    "sandboxEnabled": true,
+    "allowedCommands": [],
+    "bannedCommands": ["rm -rf /", "format", "mkfs"]
+  },
+  "context": {
+    "maxTokens": 200000,
+    "ignorePatterns": ["node_modules", ".git", "dist", "build", "*.min.js"]
+  },
+  "ui": {
+    "streaming": true,
+    "showReasoning": true,
+    "colorScheme": "dark"
+  }
+}

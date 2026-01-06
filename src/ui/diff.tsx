@@ -1,5 +1,5 @@
+import { type Change, diffLines } from 'diff'
 import { Box, Text } from 'ink'
-import { diffLines, type Change } from 'diff'
 import type { DiffViewProps } from './types.js'
 
 export function DiffView({ filePath, oldContent, newContent }: DiffViewProps) {
@@ -51,4 +51,3 @@ export function DiffView({ filePath, oldContent, newContent }: DiffViewProps) {
     </Box>
   )
 }
-

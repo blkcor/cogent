@@ -1,8 +1,8 @@
 import path from 'node:path'
 import { z } from 'zod'
-import { createTool, type ToolResult } from '../tool'
-import { fileExists, readFile, writeFile } from '../utils/file-utils'
+import { type ToolResult, createTool } from '../tool'
 import type { BackupSystem } from '../utils/backup'
+import { fileExists, readFile, writeFile } from '../utils/file-utils'
 
 export const editFileSchema = z.object({
   file_path: z.string().describe('The path to the file to edit'),
@@ -75,4 +75,3 @@ export function createEditTool(opts: { cwd: string; backupSystem?: BackupSystem 
     },
   })
 }
-

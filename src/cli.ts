@@ -2,11 +2,11 @@
 
 import { Command } from 'commander'
 import dotenv from 'dotenv'
-import React from 'react'
 import { render } from 'ink'
+import React from 'react'
+import { ConfigManager } from './config'
 import { PRODUCT_NAME, VERSION } from './constants'
 import { createAgent } from './index'
-import { ConfigManager } from './config'
 import { App, Repl } from './ui/index.js'
 
 dotenv.config()
@@ -24,22 +24,14 @@ if (shouldEnterRepl) {
   // Parse commands normally
   program
     .name('cogent')
-    .description(
-      'AI-powered coding assistant with advanced reasoning capabilities'
-    )
+    .description('AI-powered coding assistant with advanced reasoning capabilities')
     .version(VERSION)
 
   program
     .command('run <task...>')
     .description('Run a coding task')
-    .option(
-      '-m, --model <model>',
-      'Model to use (e.g., anthropic/claude-3-5-sonnet)'
-    )
-    .option(
-      '-r, --reasoning <mode>',
-      'Reasoning mode (react|plan_solve|reflection)'
-    )
+    .option('-m, --model <model>', 'Model to use (e.g., anthropic/claude-3-5-sonnet)')
+    .option('-r, --reasoning <mode>', 'Reasoning mode (react|plan_solve|reflection)')
     .option('--max-steps <n>', 'Maximum reasoning steps', '30')
     .option('--cwd <path>', 'Working directory', process.cwd())
     .option('--no-ui', 'Disable TUI and use simple console output')
@@ -62,9 +54,7 @@ if (shouldEnterRepl) {
           cwd: options.cwd,
         })
 
-        console.log(
-          `✅ Using ${modelInfo.provider.name} (${modelInfo.model.id})`
-        )
+        console.log(`✅ Using ${modelInfo.provider.name} (${modelInfo.model.id})`)
         console.log(`✅ Loaded ${tools.length()} tools`)
         console.log(`✅ Working directory: ${context.cwd}\n`)
 

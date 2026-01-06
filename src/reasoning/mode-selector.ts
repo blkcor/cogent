@@ -49,4 +49,3 @@ export class ModeSelector implements IModeSelector {
     return reviewKeywords.some((keyword) => lowerTask.includes(keyword))
   }
 }
-

@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
 import { Box, Text, useApp } from 'ink'
 import Spinner from 'ink-spinner'
-import type { AgentState } from './types.js'
+import { useEffect, useState } from 'react'
 import { createAgent } from '../index.js'
+import type { AgentState } from './types.js'
 
 interface AppProps {
   task: string
@@ -197,4 +197,3 @@ export function App({ task, onComplete }: AppProps) {
     </Box>
   )
 }
-

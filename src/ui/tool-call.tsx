@@ -52,9 +52,7 @@ export function ToolCall({ toolCall }: ToolCallProps) {
           <Text dimColor>Parameters:</Text>
           {Object.entries(toolCall.params).map(([key, value]) => (
             <Box key={key} marginLeft={2}>
-              <Text dimColor>
-                {key}:{' '}
-              </Text>
+              <Text dimColor>{key}: </Text>
               <Text>
                 {typeof value === 'string' && value.length > 50
                   ? `${value.substring(0, 50)}...`
@@ -84,4 +82,3 @@ export function ToolCall({ toolCall }: ToolCallProps) {
     </Box>
   )
 }
-

@@ -46,4 +46,3 @@ export interface ProviderConfig {
   models?: string[]
   [key: string]: any
 }
-
