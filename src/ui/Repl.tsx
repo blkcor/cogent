@@ -11,7 +11,6 @@ export function Repl() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [currentResponse, setCurrentResponse] = useState<string>('')
   const [initialized, setInitialized] = useState(false)
-  const [error, setError] = useState<string>('')
 
   useEffect(() => {
     setHistory([
@@ -26,39 +25,40 @@ export function Repl() {
     setInitialized(true)
   }, [])
 
-  useInput((input, key) => {
+  useInput((char, key) => {
     if (isProcessing) return
 
-    if (key.ctrl && input === 'c') {
+    if (key.ctrl && char === 'c') {
       exit()
       return
     }
 
     if (key.return) {
-      if (!input.trim()) return
+      setInput((currentInput) => {
+        if (!currentInput.trim()) return currentInput
 
-      const command = input.trim()
+        const command = currentInput.trim()
 
-      if (command.toLowerCase() === 'exit' || command.toLowerCase() === 'quit') {
-        exit()
-        return
-      }
+        if (command.toLowerCase() === 'exit' || command.toLowerCase() === 'quit') {
+          exit()
+          return currentInput
+        }
 
-      if (command.toLowerCase() === 'clear') {
-        setHistory([])
-        setInput('')
-        return
-      }
+        if (command.toLowerCase() === 'clear') {
+          setHistory([])
+          return ''
+        }
 
-      // Add user input to history
-      setHistory((prev) => [...prev, `> ${command}`, ''])
-      setInput('')
-      setIsProcessing(true)
-      setCurrentResponse('')
-      setError('')
+        // Add user input to history
+        setHistory((prev) => [...prev, `> ${command}`, ''])
+        setIsProcessing(true)
+        setCurrentResponse('')
 
-      // Execute the task
-      executeTask(command)
+        // Execute the task
+        executeTask(command)
+        
+        return ''
+      })
       return
     }
 
@@ -67,8 +67,8 @@ export function Repl() {
       return
     }
 
-    if (input.length === 1 && !key.ctrl && !key.meta) {
-      setInput((prev) => prev + input)
+    if (char.length === 1 && !key.ctrl && !key.meta) {
+      setInput((prev) => prev + char)
     }
   })
 
@@ -94,7 +94,6 @@ export function Repl() {
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
-      setError(message)
       setHistory((prev) => [...prev, `❌ Error: ${message}`, ''])
     } finally {
       setIsProcessing(false)
@@ -143,13 +142,6 @@ export function Repl() {
           </Text>
           <Text>{input}</Text>
           <Text inverse> </Text>
-        </Box>
-      )}
-
-      {/* Error display */}
-      {error && (
-        <Box marginTop={1}>
-          <Text color="red">Error: {error}</Text>
         </Box>
       )}
     </Box>
