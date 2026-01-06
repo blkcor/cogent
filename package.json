@@ -17,13 +17,7 @@
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [
-    "ai",
-    "coding-agent",
-    "llm",
-    "reasoning",
-    "automation"
-  ],
+  "keywords": ["ai", "coding-agent", "llm", "reasoning", "automation"],
   "author": "",
   "license": "MIT",
   "dependencies": {

@@ -16,6 +16,7 @@ export function App({ task, onComplete }: AppProps) {
     currentStep: 'Initializing agent...',
     steps: [],
     reasoning: [],
+    toolCalls: [],
     output: [],
   })
 
@@ -46,16 +47,40 @@ export function App({ task, onComplete }: AppProps) {
             setState((prev) => ({
               ...prev,
               currentStep: `Calling tool: ${toolName}`,
-              output: [...prev.output, `🔧 ${toolName}(${JSON.stringify(args)})`],
+              toolCalls: [
+                ...prev.toolCalls,
+                {
+                  toolName,
+                  params: args,
+                  status: 'running' as const,
+                },
+              ],
             }))
           },
-          onToolResult: (_toolName, result) => {
+          onToolResult: (toolName, result) => {
             if (!mounted) return
-            const shortResult = result.length > 100 ? result.substring(0, 100) + '...' : result
-            setState((prev) => ({
-              ...prev,
-              output: [...prev.output, `  ✓ ${shortResult}`],
-            }))
+            setState((prev) => {
+              const toolCalls = [...prev.toolCalls]
+              // Find last index by iterating backwards
+              let lastCallIndex = -1
+              for (let i = toolCalls.length - 1; i >= 0; i--) {
+                if (toolCalls[i].toolName === toolName) {
+                  lastCallIndex = i
+                  break
+                }
+              }
+              if (lastCallIndex !== -1) {
+                toolCalls[lastCallIndex] = {
+                  ...toolCalls[lastCallIndex],
+                  result,
+                  status: 'completed' as const,
+                }
+              }
+              return {
+                ...prev,
+                toolCalls,
+              }
+            })
           },
           onStep: (step, total) => {
             if (!mounted) return
@@ -198,17 +223,30 @@ export function App({ task, onComplete }: AppProps) {
         </Box>
       )}
 
-      {state.steps.length > 0 && (
+      {state.toolCalls.length > 0 && (
         <Box flexDirection="column" marginBottom={1}>
-          <Text bold color="blue">
-            📋 Steps:
+          <Text bold color="yellow">
+            🔧 Tool Calls:
           </Text>
-          {state.steps.map((step, idx) => (
-            <Box key={idx} marginLeft={2}>
-              <Text color="gray">
-                {step.status === 'completed' ? '✓' : step.status === 'running' ? '⋯' : '○'}{' '}
-              </Text>
-              <Text color={step.status === 'completed' ? 'green' : 'white'}>{step.name}</Text>
+          {state.toolCalls.slice(-5).map((toolCall, idx) => (
+            <Box key={idx} flexDirection="column" marginLeft={2} marginBottom={1}>
+              <Box>
+                <Text color={toolCall.status === 'completed' ? 'green' : 'yellow'}>
+                  {toolCall.status === 'completed' ? '✓' : '⋯'}{' '}
+                </Text>
+                <Text bold>{toolCall.toolName}</Text>
+                <Text dimColor>({JSON.stringify(toolCall.params)})</Text>
+              </Box>
+              {toolCall.result && (
+                <Box marginLeft={3}>
+                  <Text dimColor>
+                    →{' '}
+                    {toolCall.result.length > 100
+                      ? `${toolCall.result.substring(0, 100)}...`
+                      : toolCall.result}
+                  </Text>
+                </Box>
+              )}
             </Box>
           ))}
         </Box>
@@ -217,7 +255,7 @@ export function App({ task, onComplete }: AppProps) {
       {state.output.length > 0 && (
         <Box flexDirection="column">
           <Text bold color="cyan">
-            📤 Output:
+            📤 Final Output:
           </Text>
           {state.output.map((line, idx) => (
             <Box key={idx} marginLeft={2}>

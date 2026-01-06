@@ -28,10 +28,7 @@ export interface Tool<TSchema extends z.ZodTypeAny = z.ZodTypeAny> {
   description: string
   displayName?: string
   parameters: TSchema
-  execute: (
-    params: z.output<TSchema>,
-    toolCallId?: string
-  ) => Promise<ToolResult> | ToolResult
+  execute: (params: z.output<TSchema>, toolCallId?: string) => Promise<ToolResult> | ToolResult
   approval?: ToolApprovalInfo
   getDescription?: (opts: { params: z.output<TSchema>; cwd: string }) => string
 }
@@ -41,10 +38,7 @@ export function createTool<TSchema extends z.ZodTypeAny>(config: {
   displayName?: string
   description: string
   parameters: TSchema
-  execute: (
-    params: z.output<TSchema>,
-    toolCallId?: string
-  ) => Promise<ToolResult> | ToolResult
+  execute: (params: z.output<TSchema>, toolCallId?: string) => Promise<ToolResult> | ToolResult
   approval?: ToolApprovalInfo
   getDescription?: (opts: { params: z.output<TSchema>; cwd: string }) => string
 }): Tool<TSchema> {
@@ -61,11 +55,7 @@ export function createTool<TSchema extends z.ZodTypeAny>(config: {
 
 export interface ITools {
   get(toolName: string): Tool | undefined
-  invoke(
-    toolName: string,
-    args: string,
-    toolCallId: string
-  ): Promise<ToolResult>
+  invoke(toolName: string, args: string, toolCallId: string): Promise<ToolResult>
   toLanguageV1Tools(): Record<string, AITool>
   length(): number
 }
@@ -81,11 +71,7 @@ export class Tools implements ITools {
     return this.tools.get(toolName)
   }
 
-  async invoke(
-    toolName: string,
-    args: string,
-    toolCallId: string
-  ): Promise<ToolResult> {
+  async invoke(toolName: string, args: string, toolCallId: string): Promise<ToolResult> {
     const tool = this.tools.get(toolName)
     if (!tool) {
       return {

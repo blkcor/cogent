@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import { Box, Text, useApp, useInput } from 'ink'
 import Spinner from 'ink-spinner'
 import { useEffect, useState } from 'react'
@@ -80,15 +81,43 @@ export function Repl() {
       const { agent, modelInfo } = await createAgent({
         onThought: (thought) => {
           setCurrentResponse(`💭 ${thought.substring(0, 60)}...`)
-          setHistory((prev) => [...prev, `  💭 ${thought}`])
+          setHistory((prev) => {
+            // Add section header if this is the first thought
+            if (!prev.some((line) => line.includes('💭 Reasoning:'))) {
+              return [...prev, chalk.magenta.bold('💭 Reasoning:'), `  ${thought}`]
+            }
+            return [...prev, `  ${thought}`]
+          })
         },
         onToolCall: (toolName, args) => {
           setCurrentResponse(`🔧 Calling ${toolName}...`)
-          setHistory((prev) => [...prev, `  🔧 ${toolName}(${JSON.stringify(args)})`])
+          setHistory((prev) => {
+            // Add section header if this is the first tool call
+            if (!prev.some((line) => line.includes('🔧 Tool Calls:'))) {
+              return [
+                ...prev,
+                '',
+                chalk.yellow.bold('🔧 Tool Calls:'),
+                `  ${chalk.yellow('⋯')} ${toolName}(${JSON.stringify(args)})`,
+              ]
+            }
+            return [...prev, `  ${chalk.yellow('⋯')} ${toolName}(${JSON.stringify(args)})`]
+          })
         },
-        onToolResult: (_toolName, result) => {
-          const shortResult = result.length > 100 ? result.substring(0, 100) + '...' : result
-          setHistory((prev) => [...prev, `     ✓ ${shortResult}`])
+        onToolResult: (toolName, result) => {
+          const shortResult = result.length > 100 ? `${result.substring(0, 100)}...` : result
+          setHistory((prev) => {
+            // Find the last tool call for this tool and update it
+            const newHistory = [...prev]
+            for (let i = newHistory.length - 1; i >= 0; i--) {
+              if (newHistory[i].includes(toolName) && newHistory[i].includes('⋯')) {
+                newHistory[i] = newHistory[i].replace('⋯', chalk.green('✓'))
+                newHistory.splice(i + 1, 0, chalk.dim(`    → ${shortResult}`))
+                break
+              }
+            }
+            return newHistory
+          })
         },
         onStep: (step, total) => {
           setCurrentResponse(`Step ${step}/${total}`)
@@ -102,13 +131,23 @@ export function Repl() {
       if (result.success) {
         setHistory((prev) => [
           ...prev,
-          `✅ Completed in ${result.metadata.duration}ms (${result.metadata.turnsCount} turns)`,
           '',
+          chalk.cyan.bold('📤 Final Output:'),
           result.result,
+          '',
+          chalk.dim(
+            `✅ Completed in ${result.metadata.duration}ms (${result.metadata.turnsCount} turns)`
+          ),
           '',
         ])
       } else {
-        setHistory((prev) => [...prev, `❌ Failed: ${result.result}`, ''])
+        setHistory((prev) => [
+          ...prev,
+          '',
+          chalk.red.bold('📤 Final Output:'),
+          `❌ Failed: ${result.result}`,
+          '',
+        ])
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)

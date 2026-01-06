@@ -3,6 +3,7 @@ export interface AgentState {
   currentStep: string
   steps: Step[]
   reasoning: string[]
+  toolCalls: ToolCallDisplay[]
   output: string[]
   error?: string
 }

@@ -225,7 +225,7 @@ When done, respond with "FINAL ANSWER:" followed by your conclusion.`
 
         if (isNetworkError && !isLastAttempt) {
           // Wait before retry (exponential backoff)
-          const delay = Math.pow(2, attempt) * 1000
+          const delay = 2 ** attempt * 1000
           await new Promise((resolve) => setTimeout(resolve, delay))
           continue
         }
