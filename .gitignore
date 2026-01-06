@@ -37,7 +37,6 @@ coverage/
 # Memory/Vector DB
 *.lance
 *.db
-memory/
 
 # Backups
 .cogent-backups/
